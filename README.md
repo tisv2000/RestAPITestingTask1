@@ -115,38 +115,38 @@ API позволяет:
 ##Получение проекта
 
         cd <your_projects_directory>
-        git clone https://tisv2000@bitbucket.org/tisv2000/cardpaytesttask.git CardPayTestTask
+        git clone https://bitbucket.org/tisv2000/cardpaytesttask.git CardPayTestTask
         cd CardPayTestTask
 
 ##Запуск автотестов
 
 Возможны следующие варианты запуска автотестов:
 
-* Запуск всех тестов (с Cucumber и без). Выполнится 60 тестов, два упадет
+* Запуск всех тестов (с Cucumber и без). Выполнится 60 тестов, два упадет.
 
         mvn test
 
-* Запуск всех тестов без Cucumber. Выполнится 30 тестов, один упадет
+* Запуск всех тестов без Cucumber. Выполнится 30 тестов, один упадет.
 
         mvn test -Dtest=FishTextTest
 
-* Запуск всех тестов с Cucumber. Выполнится 30 тестов, один упадет
+* Запуск всех тестов с Cucumber. Выполнится 30 тестов, один упадет.
 
         mvn test -Dtest=CucumberStarterTest
 
-* Запуск только позитивных тестов (с Cucumber)
+* Запуск только позитивных тестов (с Cucumber). Выполнится 18 тестов.
 
         mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @Positive"
 
-* Запуск только негативных тестов (с Cucumber)
+* Запуск только негативных тестов (с Cucumber). Выполнится 12 тестов, один упадет.
 
-        mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @Negative"
+        mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @Negative" 
 
-* Запуск только тестов для JSON (с Cucumber)
+* Запуск только тестов для JSON (с Cucumber). Выполнится 15 тестов.
 
-        mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @FormatJson"
+        mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @FormatJson" 
 
-* Запуск только тестов для HTML (с Cucumber)
+* Запуск только тестов для HTML (с Cucumber). Выполнится 15 тестов, один упадет.
 
-        mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @FormatHtml"
+        mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @FormatHtml" 
 
