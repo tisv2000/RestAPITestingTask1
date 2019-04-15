@@ -6,12 +6,13 @@ import static io.restassured.RestAssured.given;
 
 public class FishTextTestUtils {
 
-    public static final String BASE_ENDPOINT = "http://fish-text.ru/get";
+    private static final String BASE_ENDPOINT = "http://fish-text.ru/get";
+    private static final String PARAMETER_TYPE = "type";
+    private static final String PARAMETER_NUMBER = "number";
+    private static final String PARAMETER_FORMAT = "format";
+
     public static final int HTTP_STATUS_CODE_200 = 200;
     public static final int HTTP_STATUS_CODE_500 = 500;
-    public static final String PARAMETER_TYPE = "type";
-    public static final String PARAMETER_NUMBER = "number";
-    public static final String PARAMETER_FORMAT = "format";
     public static final String FORMAT_JSON = "json";
     public static final String FORMAT_HTML = "html";
     public static final String TYPE_SENTENCE = "sentence";
@@ -49,7 +50,7 @@ public class FishTextTestUtils {
         }
     }
 
-    public static String getDelimiter(String type, String format) {
+    private static String getDelimiter(String type, String format) {
         if (type.equals(TYPE_SENTENCE)) {
             return "[.?!]";
         } else {

@@ -63,7 +63,6 @@ Feature: API testing of fish-text.ru
       | title    |   -1   |        31         | Unknown error. Contact the administration.        |
       | title    |   501  |        11         | You requested too much content. Be more moderate. |
 
-
   @Negative
   @FormatHtml
   Scenario Outline: Negative Fish HTML test
@@ -80,4 +79,3 @@ Feature: API testing of fish-text.ru
       | paragraph|   101  |        200         | You requested too much content. Be more moderate. |
       | title    |   -1   |        500         | Unknown error. Contact the administration.        |
       | title    |   501  |        200         | You requested too much content. Be more moderate. |
-

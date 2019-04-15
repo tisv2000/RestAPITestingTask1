@@ -92,8 +92,7 @@ public class FishTextTest {
     @DataProvider
     private Object[][] negativeHtmlTestDataProvider() {
         return new Object[][]{
-//                {TYPE_SENTENCE, -1, HTTP_STATUS_CODE_200, "<p></p>"},                         // Это неправильный кейс! Он проходит!
-                {TYPE_SENTENCE, -1, HTTP_STATUS_CODE_500, ERROR_TEXT_2},   // Должно быть так! Он будет падать!
+                {TYPE_SENTENCE, -1, HTTP_STATUS_CODE_500, ERROR_TEXT_2},
                 {TYPE_SENTENCE, 501, HTTP_STATUS_CODE_200, ERROR_TEXT_1},
                 {TYPE_PARAGRAPH, -1, HTTP_STATUS_CODE_500, ERROR_TEXT_2},
                 {TYPE_PARAGRAPH, 101, HTTP_STATUS_CODE_200, ERROR_TEXT_1},
