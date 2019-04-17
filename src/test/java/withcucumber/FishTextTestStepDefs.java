@@ -24,7 +24,7 @@ public class FishTextTestStepDefs {
         this.number = number;
     }
 
-    @When("^send GET request, specifying two parameters, in order to get json")
+    @When("^send GET request, specifying two parameters, in order to get json$")
     public void sendGETRequestSpecifyingTwoParametersTypeOfTheReturningTextAndNumberOfItemsInOrderToGetJson() {
         RestAssured.registerParser("text/html", Parser.JSON);
         response = sendRequest(type, number, FORMAT_JSON);
@@ -52,7 +52,7 @@ public class FishTextTestStepDefs {
         response = sendRequest(type, number, FORMAT_HTML);
     }
 
-    @And("^number of elements in html should equal (-?\\d+)$")
+    @And("^number of elements in html should equal (\\d+)$")
     public void numberOfElementsInHtmlShouldEqualExpected(int expectedNumber) {
         Assert.assertEquals(countItemsNumber(response.then().extract().asString(), type, FORMAT_HTML),
                 expectedNumber, getInvalidAmountMessage(type));
