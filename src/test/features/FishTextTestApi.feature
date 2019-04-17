@@ -14,15 +14,24 @@ Feature: API testing of fish-text.ru
 
     Examples:
       | type     | number | expectedNumber|
-      | sentence |   1    |       1       |
-      | sentence |   500  |       500     |
       | sentence |   0    |       3       |
-      | paragraph|   1    |       1       |
-      | paragraph|   100  |       100     |
+      | sentence |   1    |       1       |
+      | sentence |   2    |       2       |
+      | sentence |   50   |       50      |
+      | sentence |   499  |       499     |
+      | sentence |   500  |       500     |
       | paragraph|   0    |       3       |
-      | title    |   1    |       1       |
-      | title    |   500  |       500     |
+      | paragraph|   1    |       1       |
+      | paragraph|   2    |       2       |
+      | paragraph|   50   |       50      |
+      | paragraph|   99   |       99      |
+      | paragraph|   100  |       100     |
       | title    |   0    |       1       |
+      | title    |   1    |       1       |
+      | title    |   2    |       2       |
+      | title    |   50   |       50      |
+      | title    |   499  |       499     |
+      | title    |   500  |       500     |
 
   @Positive
   @FormatHtml
@@ -34,15 +43,24 @@ Feature: API testing of fish-text.ru
 
     Examples:
       | type     | number | expectedNumber|
-      | sentence |   1    |       1       |
-      | sentence |   500  |       500     |
       | sentence |   0    |       3       |
-      | paragraph|   1    |       1       |
-      | paragraph|   100  |       100     |
+      | sentence |   1    |       1       |
+      | sentence |   2    |       2       |
+      | sentence |   50   |       50      |
+      | sentence |   499  |       499     |
+      | sentence |   500  |       500     |
       | paragraph|   0    |       3       |
-      | title    |   1    |       1       |
-      | title    |   500  |       500     |
+      | paragraph|   1    |       1       |
+      | paragraph|   2    |       2       |
+      | paragraph|   50   |       50      |
+      | paragraph|   99   |       99      |
+      | paragraph|   100  |       100     |
       | title    |   0    |       1       |
+      | title    |   1    |       1       |
+      | title    |   2    |       2       |
+      | title    |   50   |       50      |
+      | title    |   499  |       499     |
+      | title    |   500  |       500     |
 
   @Negative
   @FormatJson

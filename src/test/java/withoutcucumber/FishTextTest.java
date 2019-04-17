@@ -40,15 +40,24 @@ public class FishTextTest {
     @DataProvider
     private Object[][] positiveTestDataProvider() {
         return new Object[][]{
-                {TYPE_SENTENCE, 1, 1},
-                {TYPE_SENTENCE, 500, 500},
                 {TYPE_SENTENCE, 0, 3},
-                {TYPE_PARAGRAPH, 1, 1},
-                {TYPE_PARAGRAPH, 100, 100},
+                {TYPE_SENTENCE, 1, 1},
+                {TYPE_SENTENCE, 2, 2},
+                {TYPE_SENTENCE, 50, 50},
+                {TYPE_SENTENCE, 499, 499},
+                {TYPE_SENTENCE, 500, 500},
                 {TYPE_PARAGRAPH, 0, 3},
+                {TYPE_PARAGRAPH, 1, 1},
+                {TYPE_PARAGRAPH, 2, 2},
+                {TYPE_PARAGRAPH, 50, 50},
+                {TYPE_PARAGRAPH, 99, 99},
+                {TYPE_PARAGRAPH, 100, 100},
+                {TYPE_TITLE, 0, 1},
                 {TYPE_TITLE, 1, 1},
-                {TYPE_TITLE, 500, 500},
-                {TYPE_TITLE, 0, 1}
+                {TYPE_TITLE, 2, 2},
+                {TYPE_TITLE, 50, 50},
+                {TYPE_TITLE, 499, 499},
+                {TYPE_TITLE, 500, 500}
         };
     }
 
