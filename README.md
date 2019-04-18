@@ -46,6 +46,7 @@ API позволяет:
 
 ###Используемые техники тест-дизайна
 * Boundary testing
+* Equivalence class testing
 * Test matrix
 * DDT
 
