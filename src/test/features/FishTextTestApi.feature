@@ -70,7 +70,7 @@ Feature: API testing of fish-text.ru
     Then the status code should be 200
     And result field in json should be 'error'
     And json error code should equal <expectedErrorCode>
-    And json error text should equal <expectedErrorText>
+    And json error text should equal '<expectedErrorText>'
 
     Examples:
       | type     | number | expectedErrorCode | expectedErrorText                                         |
@@ -87,7 +87,7 @@ Feature: API testing of fish-text.ru
     Given two parameters <type> and <number>
     When send GET request, specifying two parameters, in order to get html
     Then the status code should be <expectedStatusCode>
-    And  html text should equal <expectedErrorText>
+    And  html text should equal '<expectedErrorText>'
 
     Examples:
       | type     | number | expectedStatusCode | expectedErrorText                                         |
