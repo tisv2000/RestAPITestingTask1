@@ -2,15 +2,15 @@
 
 ##The task
 
-Create a project for API service (http://fish-text.ru/api) automation testing and load it on GitHub or BitBucket
+Create a project for API service (http://fish-text.ru/api) automation testing and upload it on GitHub or BitBucket
 
 1. Develop test cases (as complete as you see fit)
 2. Crete regression testing test plan
 3. Automate a test plan:
-* project should be written on Java (version 8+)
-* project should be built by maven
+* the project should be written in Java (version 8+)
+* the project should be built on maven
 * all tests should be framed as .feature files (Cucumber framework)
-* tests should be divided on groups in order to have an ability to run them separately
+* tests should be divided into groups in order to have an ability to run them separately
 
 Preferences:
 * All API actions have to be performed through one java class
@@ -24,7 +24,7 @@ REST API of the site http://fish-text.ru/api
 ####Description
 >Fish text is used by designers, planners, and front-end developers when there is a need to quickly fill out mock-ups or prototypes with content. This is a test content that should not make any sense, just show the presence of the text itself or demonstrate typography in action.
 >
->With the help of this online fish-text generator, you can batch produce both individual sentences and entire paragraphs of an excellent fish text. And for fans of automation there is an implementation of the Fishtext API.
+>With the help of this online fish-text generator, you can produce both individual sentences and entire paragraphs of an excellent fish text. And for fans of automation there is an implementation of the Fishtext API.
 
 API allows:
 * Request text as a set of sentences, paragraphs or headings (determined by the parameter `type`).
