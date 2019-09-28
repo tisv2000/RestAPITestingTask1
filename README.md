@@ -1,173 +1,171 @@
-#Решение задания по автоматизации тестирования REST API
+#Test task for REST API automation testing
 
-##Задание
+##The task
 
-Создать и выложить на GitHub или BitBucket проект автотестов API сервиса http://fish-text.ru/api
+Create a project for API service (http://fish-text.ru/api) automation testing and load it on GitHub or BitBucket
 
-1. Разработать тест кейсы (настолько полно, насколько считаете нужным)
-2. Составить тест-план регрессионного тестирования
-3. Автоматизировать тест-план:
-* проект должен быть написан на java (версия 8+)
-* проект должен собираться посредством maven
-* тесты должны быть оформлены в виде файлов .feature (Cucumber framework)
-* тесты должны быть разделены на группы для возможности их раздельного запуска
+1. Develop test cases (as complete as you see fit)
+2. Crete regression testing test plan
+3. Automate a test plan:
+* project should be written on Java (version 8+)
+* project should be built by maven
+* all tests should be framed as .feature files (Cucumber framework)
+* tests should be divided on groups in order to have an ability to run them separately
 
-Пожелания:
-* Выполнение действий с API должно происходить через один java класс
-* Количество повторений кода должно быть минимальным
+Preferences:
+* All API actions have to be performed through one java class
+* Amount of code repetition has to be minimal
 
 
-##Тест-план регрессионного тестирования
+##Regression Testing Test Plan
 
 ###Application Under Test
-REST API сайта http://fish-text.ru/api
-
->Рыбатекст используется дизайнерами, проектировщиками и фронтендерами, когда нужно быстро заполнить макеты или прототипы содержимым. Это тестовый контент, который не должен нести никакого смысла, лишь показать наличие самого текста или продемонстрировать типографику в деле.
+REST API of the site http://fish-text.ru/api
+####Description
+>Fish text is used by designers, planners, and front-end developers when there is a need to quickly fill out mock-ups or prototypes with content. This is a test content that should not make any sense, just show the presence of the text itself or demonstrate typography in action.
 >
->C помощью этого онлайн-генератора рыботекста можно пачками плодить как отдельные предложения, так и целые абзацы отменнейшего рыбы-текста. А для любителей автоматизации даже реализован API фиштекста.
+>With the help of this online fish-text generator, you can batch produce both individual sentences and entire paragraphs of an excellent fish text. And for fans of automation there is an implementation of the Fishtext API.
 
-API позволяет:
-* Запрашивать текст в виде набора предложений, абзацев или заголовков (определяется параметром `type`).
-* Указывать количество предложений/абзацев/заголовков (параметр `number`).
-* Выбирать формат, в котором вернется текст (JSON или HTML) (параметр `format`).
+API allows:
+* Request text as a set of sentences, paragraphs or headings (determined by the parameter `type`).
+* Set the number of sentences / paragraphs / headings (parameter `number`).
+* Choose the format in which the text will be returned (JSON or HTML) (parameter `format`).
 
-###Анализ Application Under Test
-В процессе анализа были выявлены следующие особенности, по сути являющиеся багами:
+###Application Under Test Analysis
+During the analysis, the following features were identified, which are essentially bugs:
 
-* При `format=json` сайт передает заголовок `Content-Type: text/html`, а не `application/json`.
-* При `format=html` возвращаемый сайтом документ не содержит корневого тега, что не дает RestAssured нормально его распарсить, что, в свою очередь, лишает нас возможности использовать XPath.
-* Допустимыми значениями для `number` являются диапазоны 1-100 и 1-500. Однако, нулевое значение принимается нормально, при этом используется значение по умолчанию. 
-* Некорректное значение для `number` (т.е. не числа) спокойно принимаются, при этом используется значение по умолчанию.
-* При указании отрицательного значения `number` при `format=html`, поведение приложения отличается от поведения для других форматов. Мы будем считать это багом, поэтому **как минимум один тест у нас будет падать**.
-* Некорректные значения для `type` и `format` спокойно принимаются. В этом случае используются значения по умолчанию.
+* When set `format=json`, in response we get a header `Content-Type: text/html`, and not `application/json`.
+* When set `format=html`, response body does not contain a root tag, which does not allow RestAssured to parse it normally, which, in turn, deprives us of the ability to use XPath.
+* Allowed values for `number` are in range of 1-100 and 1-500. However a null value is acceptable, in this case the default value is used. 
+* Incorrect values (not digits) for `number` are acceptable, in this case the default value is used.
+* When specify a negative value for `number` when `format=html`, the behavior of the application is different from the behavior for other formats. We will consider it as a bug, therefore **at least one test will be failed**.
+* Incorrect values for `type` and `format` are acceptable, in this case the default value is used.
 
-Данные особенности будут учтены далее в тест-плане.
+These features will be considered later in the test plan.
 
-###Используемые техники тест-дизайна
+###Test Design Techniques Used
 * Equivalence class testing
 * Boundary testing
 * Test matrix
 * DDT
 
-###Тестируемые функции
-Должны быть протестированы все возможные комбинации параметров запроса, приведенные в [описании](http://fish-text.ru/api). В том числе ситуации, когда любой из параметров не указан.
+###Testing features
+All possible combinations of query parameters, given in [description](http://fish-text.ru/api) should be tested. Including situations when any of the parameters is not specified.
 
-При этом, для параметра `number` необходимо учесть граничные условия и классы эквивалентности, которых существует несколько:
-* Допустимые значения: 1-100 для абзацев и 1-500 для предложений и заголовков.
-* Нулевое значение: по идее, это тоже не допустимое значение, но в этом случае используется значение по умолчанию
- (1 - для заголовков и 3 - для предложений и абзацев).
-* Отрицательные значения (недопустимые значения).
-* Не числовые значения (недопустимые значения).
+At the same time, for the parameter `number` it is necessary to take into account the boundary conditions and equivalence classes, of which there are several: Acceptable values: 1-100 for paragraphs and 1-500 for sentences and headings.
+* Zero value: in theory, this is also not a valid value, but in this case the default value is used
+    (1 for headings and 3 for sentences and paragraphs).
+* Negative values (invalid values).
+* Non-numeric values (invalid values).
 
-Для позитивных тест-кейсов необходимо проверять:
-* Status Code ответа сервера
-* Поле `status` в JSON, полученом с сервера (только для `format=json`)
-* Соответствие количества полученных предложений/параграфов/заголовков запрошенному значению `number`
+For positive test cases it is necessary to check:
+* Status Code from service response
+* Field `status` in JSON, gotten from server (only for `format=json`)
+* Correspondence of the number of received sentences/paragraphs/headings to the requested value of `number`
 
-Для негативных текст-кейсов необходимо проверять:
-* Status Code ответа сервера
-* Поле `status` в JSON, полученом с сервера (только для `format=json`)
-* Текст сообщения об ошибке
+For negative test cases it is necessary to check:
+* Status Code from service response
+* Field `status` in JSON, gotten from server (only for `format=json`)
+* Response error message
 
-###Тест-кейсы
-Полный перечень параметров запросов для всех тестов приведен в [матрице](https://drive.google.com/open?id=1eIT7GlUStORdLDSV015jx6Fp1GPl9zFslxRn7TZSzhQ).
+###Test cases
+A complete list of query parameters for all tests is given in the [matrix](https://drive.google.com/open?id=1eIT7GlUStORdLDSV015jx6Fp1GPl9zFslxRn7TZSzhQ).
 
-Каждая клетка, помеченная идентификатором (числом, начинающимся с символа '#'), является отдельным тест-кейсом.
+Each cell is marked with an identifier (a number starting with the '#' character) is a separate test case.
 
-В клетках таблицы кроме номера указана вспомогательная информация по тест-кейсу.
+In the cells of the table, in addition to the number, auxiliary information on the test case is indicated.
 
-Таким образом, в результате комбинации параметров запроса получается 66 тест-кейсов.
+Thus, as a result of a combination of query parameters, 66 test cases are obtained.
 
-Кроме указанных в таблице, также необходимы следующие тест-кейсы:
+In addition to those ones, indicated in the table, the following test cases are also required:
 
-* \#67: Опущен параметр `type`. Должно быть использовано значение по умолчанию (`sentence`).
-* \#68: Опущен параметр `format`. Должно быть использовано значение по умолчанию (`json`).
-* \#69: Указано недопустимое значение `type`. Должно быть сообщение об ошибке, однако вместо этого используется значение по умолчанию.
-* \#70: Указано недопустимое значение `format`. Должно быть сообщение об ошибке, однако вместо этого используется значение по умолчанию.
-* \#71: Указано недопустимое значение `type` и `format` одновременно. Должно быть сообщение об ошибке, однако вместо этого используются значения по умолчанию.
-* \#72: Параметр `type` указан два раза.
-* \#73: Параметр `format` указан два раза.
-* \#74: Параметр `number` указан два раза.
-* \#75: Проверка ограничений на количество запросов в минуту.
-* \#76: Указан не GET запрос, а POST.
+* \#67: Parameter `type` is omitted. Default value should be used (`sentence`).
+* \#68: Parameter `format`is omitted. Default value should be used (`json`).
+* \#69: Not acceptable value is specified for parameter `type`. There should be an error message, but instead, the default value is used.
+* \#70: Invalid value specified for `format`. There should be an error message, but the default value is used instead.
+* \#71: Invalid value specified for parameters `type` and `format` at the same time. There should be an error message, but the default value is used instead.
+* \#72: Parameter `type` is specified twice.
+* \#73: Parameter `format` is specified twice.
+* \#74: Parameter `number` is specified twice.
+* \#75: Check limits on the number of requests per minute.
+* \#76: Specify not a GET request, but a POST.
  
 
-Общее количество тест-кейсов: 76.
+Total number of test cases: 76.
 
-###Автоматизация
-Исходя из соображений, приведенных в разделе *“Анализ Application Under Test”*,  тест-кейсы #7, #14, #21, #28, #35, #42, #45, #46, #49, #50, #53, #54, #57, #58, #61, #62, #65, #66 и с #67 по #76 автоматизироваться не будут.
+###Automation
+Based on the considerations given in the section *“Application Under Test Analysis”*,  test cases #7, #14, #21, #28, #35, #42, #45, #46, #49, #50, #53, #54, #57, #58, #61, #62, #65, #66 and from #67 to #76 will not be automated.
 
-Итого: будет автоматизировано 48 тест-кейсов, не будет - 28.
+Total: 48 test cases will be automated, and 28 will not be.
+For this task, manual test cases will not be detailed.
 
-В рамках данного задания мануальные тест-кейсы подробно расписываться не будут.
-
-С учетом применения DDT, для 48-ти тест-кейсов необходимо реализовать всего 4 тестовых сценария:
+Given the use of DDT, for 48 test cases it is necessary to implement a total of 4 test scenarios:
 * Positive JSON
 * Positive HTML
 * Negative JSON
 * Negative HTML
 
-Автоматизация будет произведена на Java 8 с использованием RestAssured и Cucumber.
+Automation will be done in Java 8 using RestAssured and Cucumber.
 
-###Особенности автоматизации тест-кейсов
-Я взяла на себя смелость расширить задание и реализовать не один, а четыре набора тестовых сценариев:
-* без Cucumber - package `withoutcucumber`.
-* с Cucumber - package `withcucumber`.
+###Features of test case automation
+I took the liberty of expanding the task and implementing not one, but four sets of test scenarios:
+* without Cucumber - package `withoutcucumber`.
+* with Cucumber - package `withcucumber`.
 
-Причем с Cucumber я решила сделать три варианта:
-* с использованием аннотаций (на ветке `master`)
-* с использованием cucumber-java8 (на ветке `cucumber-java8`)
-* с ипсользованием cucumber expressions (на ветке `cucumber-java8-expr`)
+And with Cucumber, I decided to make three options:
+* using annotations (on branch `master`)
+* using cucumber-java8 (on branch `cucumber-java8`)
+* using cucumber expressions (on branch `cucumber-java8-expr`)
 
-В итоге получилось четыре набора тестовых сценариев (один без Cucumber и три - с Cucumber).
+The result is: four sets of test scripts (one without Cucumber and three with Cucumber).
 
-В каждом наборе реализуется по четыре тестовых сценария. И каждый набор выполняет по 48 тест-кейсов.
+Each set implements four test scenarios. And each set performs 48 test cases.
 
-Для возможности раздельного запуска тестовых сценариев (только для наборов с Cucumber) они будут помечены следующими тегами:
-* @Positive - все позитивные тесты
-* @Negative - все негативные тесты
-* @FormatJson - негативные и позитивные тесты для JSON
-* @FormatHtml - негативные и позитивные тесты для HTML
+To be able to run test scripts separately (only for sets with Cucumber) they will be marked with the following tags:
+* @Positive - all positive tests
+* @Negative - all negative tests
+* @FormatJson - negative and positive tests for JSON
+* @FormatHtml - negative and positive tests for HTML
 
-##Результат тестирования
-Результат тестирования приведен [здесь](https://drive.google.com/open?id=1Q9YU6vkdHI_v6E7NIISs7ENZJKq6N2rHy4v6yG4xIz8).
+##Test result
+Test result is given [here](https://drive.google.com/open?id=1Q9YU6vkdHI_v6E7NIISs7ENZJKq6N2rHy4v6yG4xIz8).
 
-Итого: passed: 47, failed: 1
+In total: passed: 47, failed: 1
 
-##Получение проекта
+##Getting project
 
         cd <your_projects_directory>
         git clone https://bitbucket.org/tisv2000/cardpaytesttask.git CardPayTestTask
         cd CardPayTestTask
 
-##Запуск автотестов
+##Running autotests
 
-Возможны следующие варианты запуска автотестов:
+The following options for running autotests are possible:
 
-* Запуск всех тестов (с Cucumber и без). Выполнится 96 тестов, два упадет.
+* Run all tests (with and without Cucumber). 96 tests will be executed, two will fall.
 
         mvn test
 
-* Запуск всех тестов без Cucumber. Выполнится 48 тестов, один упадет.
+* Run all tests (without Cucumber). 48 tests will be executed, one will fall.
 
         mvn test -Dtest=FishTextTest
 
-* Запуск всех тестов с Cucumber (здесь и далее возможен выбор одной из трех веток, как указано выше). Выполнится 48 тестов, один упадет.
+* Run all tests with Cucumber (hereinafter, one of the three branches can be selected, as indicated above). 48 will be executed, one will fail.
 
         mvn test -Dtest=CucumberStarterTest
 
-* Запуск только позитивных тестов (с Cucumber). Выполнится 36 тестов.
+* Run only positive tests (with Cucumber). 36 tests will be executed.
 
         mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @Positive"
 
-* Запуск только негативных тестов (с Cucumber). Выполнится 12 тестов, один упадет.
+* Run only negative tests (with Cucumber). 12 tests will be executed, one will fail.
 
         mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @Negative" 
 
-* Запуск только тестов для JSON (с Cucumber). Выполнится 24 тестов.
+* Run tests for JSON only (with Cucumber). 24 tests will be executed.
 
         mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @FormatJson" 
 
-* Запуск только тестов для HTML (с Cucumber). Выполнится 24 тестов, один упадет.
+* Run tests for HTML only (with Cucumber). 24 tests will be executed, one will fail.
 
         mvn test -Dtest=CucumberStarterTest -Dcucumber.options="--tags @FormatHtml" 
