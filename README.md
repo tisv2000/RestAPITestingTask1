@@ -1,6 +1,6 @@
-#Test task for REST API automation testing
+# Test task for REST API automation testing
 
-##The task
+## The task
 
 Create a project for API service (http://fish-text.ru/api) automation testing and upload it on GitHub or BitBucket
 
@@ -17,11 +17,11 @@ Preferences:
 * Amount of code repetition has to be minimal
 
 
-##Regression Testing Test Plan
+## Regression Testing Test Plan
 
-###Application Under Test
+### Application Under Test
 REST API of the site http://fish-text.ru/api
-####Description
+#### Description
 >Fish text is used by designers, planners, and front-end developers when there is a need to quickly fill out mock-ups or prototypes with content. This is a test content that should not make any sense, just show the presence of the text itself or demonstrate typography in action.
 >
 >With the help of this online fish-text generator, you can produce both individual sentences and entire paragraphs of an excellent fish text. And for fans of automation there is an implementation of the Fishtext API.
@@ -31,7 +31,7 @@ API allows:
 * Set the number of sentences / paragraphs / headings (parameter `number`).
 * Choose the format in which the text will be returned (JSON or HTML) (parameter `format`).
 
-###Application Under Test Analysis
+### Application Under Test Analysis
 During the analysis, the following features were identified, which are essentially bugs:
 
 * When set `format=json`, in response we get a header `Content-Type: text/html`, and not `application/json`.
@@ -43,13 +43,13 @@ During the analysis, the following features were identified, which are essential
 
 These features will be considered later in the test plan.
 
-###Test Design Techniques Used
+### Test Design Techniques Used
 * Equivalence class testing
 * Boundary testing
 * Test matrix
 * DDT
 
-###Testing features
+### Testing features
 All possible combinations of query parameters, given in [description](http://fish-text.ru/api) should be tested. Including situations when any of the parameters is not specified.
 
 At the same time, for the parameter `number` it is necessary to take into account the boundary conditions and equivalence classes, of which there are several: Acceptable values: 1-100 for paragraphs and 1-500 for sentences and headings.
@@ -68,7 +68,7 @@ For negative test cases it is necessary to check:
 * Field `status` in JSON, gotten from server (only for `format=json`)
 * Response error message
 
-###Test cases
+### Test cases
 A complete list of query parameters for all tests is given in the [matrix](https://drive.google.com/open?id=1eIT7GlUStORdLDSV015jx6Fp1GPl9zFslxRn7TZSzhQ).
 
 Each cell is marked with an identifier (a number starting with the '#' character) is a separate test case.
@@ -93,7 +93,7 @@ In addition to those ones, indicated in the table, the following test cases are 
 
 Total number of test cases: 76.
 
-###Automation
+### Automation
 Based on the considerations given in the section *“Application Under Test Analysis”*,  test cases #7, #14, #21, #28, #35, #42, #45, #46, #49, #50, #53, #54, #57, #58, #61, #62, #65, #66 and from #67 to #76 will not be automated.
 
 Total: 48 test cases will be automated, and 28 will not be.
@@ -107,7 +107,7 @@ Given the use of DDT, for 48 test cases it is necessary to implement a total of 
 
 Automation will be done in Java 8 using RestAssured and Cucumber.
 
-###Features of test case automation
+### Features of test case automation
 I took the liberty of expanding the task and implementing not one, but four sets of test scenarios:
 * without Cucumber - package `withoutcucumber`.
 * with Cucumber - package `withcucumber`.
@@ -127,18 +127,18 @@ To be able to run test scripts separately (only for sets with Cucumber) they wil
 * @FormatJson - negative and positive tests for JSON
 * @FormatHtml - negative and positive tests for HTML
 
-##Test result
+## Test result
 Test result is given [here](https://drive.google.com/open?id=1Q9YU6vkdHI_v6E7NIISs7ENZJKq6N2rHy4v6yG4xIz8).
 
 In total: passed: 47, failed: 1
 
-##Getting project
+## Getting project
 
         cd <your_projects_directory>
         git clone https://bitbucket.org/tisv2000/cardpaytesttask.git CardPayTestTask
         cd CardPayTestTask
 
-##Running autotests
+## Running autotests
 
 The following options for running autotests are possible:
 
